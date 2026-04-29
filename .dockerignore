@@ -1,0 +1,9 @@
+# Whitelist approach: exclude everything, then allow only what the Dockerfile needs.
+**
+
+# --- Application source ---
+!privatize_this.py
+!privatize_this_config.py
+
+# --- Build dependencies ---
+!requirements.txt

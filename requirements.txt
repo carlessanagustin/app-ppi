@@ -1,0 +1,8 @@
+fastapi
+pydantic
+uvicorn
+uvloop
+gliner
+#presidio
+#spacy
+#flair

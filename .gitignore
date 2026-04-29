@@ -1,0 +1,54 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checker caches
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# HuggingFace / ML cache
+hf-cache/
+.cache/
+
+# Docker Compose volume data
+data-*/
+
+# IDE configs
+.vscode/
+.idea/
+
+# Claude Code local config
+.claude/
+
+# macOS
+.DS_Store
+
+# OS temp files
+*.tmp
+*.log
