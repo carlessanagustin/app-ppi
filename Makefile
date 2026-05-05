@@ -38,7 +38,6 @@ docker-clean:
 # docker compose
 dc-up:
 	docker compose up -d
-	$(MAKE) ollama-pull-models
 
 dc-down:
 	-docker compose down

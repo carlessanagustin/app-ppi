@@ -3,6 +3,8 @@ pydantic
 uvicorn
 uvloop
 gliner
+litellm
+httpx
 #presidio
 #spacy
 #flair

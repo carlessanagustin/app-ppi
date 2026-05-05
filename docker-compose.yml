@@ -1,7 +1,6 @@
 services:
   ollama:
-    #image: ollama/ollama:latest
-    image: ollama/ollama:0.21.0
+    image: ollama/ollama:0.23.0
     restart: unless-stopped
     container_name: ollama
     healthcheck:
@@ -20,8 +19,7 @@ services:
       - ollama-net
 
   open-webui:
-    #image: ghcr.io/open-webui/open-webui:main-slim
-    image: ghcr.io/open-webui/open-webui:v0.8.12
+    image: ghcr.io/open-webui/open-webui:v0.9.2
     restart: unless-stopped
     container_name: open-webui
     ports:
@@ -38,7 +36,7 @@ services:
       - ollama
     networks:
       - ollama-net
-      - milvus-net
+      - presidio-net
       - chroma-net
     environment:
       GLOBAL_LOG_LEVEL: WARNING
@@ -58,14 +56,14 @@ services:
       MILVUS_TOKEN: root:Milvus
 
   lobe-chat:
-    image: lobehub/lobe-chat
+    image: lobehub/lobe-chat:1.143.3
     container_name: lobe-chat
     restart: unless-stopped
     depends_on:
       - ollama
     networks:
       - ollama-net
-      - milvus-net
+      - presidio-net
       - chroma-net
     ports:
       - "3210:3210"
@@ -87,7 +85,7 @@ services:
       OLLAMA_PROXY_URL: http://ollama:11434
 
   chromadb:
-    image: chromadb/chroma:1.1.1
+    image: chromadb/chroma:1.5.9
     container_name: chromadb
     ports:
       - "8000:8000"
@@ -106,8 +104,26 @@ services:
     networks:
       - chroma-net
 
+  presidio-analyzer:
+    image: mcr.microsoft.com/presidio-analyzer:latest
+    ports:
+      - "5002:3000"
+    environment:
+      - GRPC_PORT=5001
+    networks:
+      - presidio-net
+
+  presidio-anonymizer:
+    image: mcr.microsoft.com/presidio-anonymizer:latest
+    ports:
+      - "5001:3000"
+    networks:
+      - presidio-net
+
 networks:
   chroma-net:
     driver: bridge
   ollama-net:
+    driver: bridge
+  presidio-net:
     driver: bridge

@@ -23,4 +23,4 @@ In production, we use Kubernetes with Helm manifests.
 ![architecture](./images/kong_auth_model_routing_flow.svg)
 
 * Architecture 3
-![architecture](./images/architecture.drawio.svg)
+![architecture](./images/architecture.svg)
