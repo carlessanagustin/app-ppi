@@ -1,0 +1,19 @@
+services:
+  ollama:
+    image: ollama/ollama:0.23.0
+    restart: unless-stopped
+    container_name: ollama
+    healthcheck:
+      test: [ "CMD", "/bin/bash", "-c", "cat < /dev/null > /dev/tcp/localhost/11434" ]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./data-ollama:/root/.ollama
+    networks:
+      - ollama-net

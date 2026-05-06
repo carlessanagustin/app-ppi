@@ -1,0 +1,29 @@
+services:
+  lobe-chat:
+    image: lobehub/lobe-chat:1.143.3
+    container_name: lobe-chat
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    networks:
+      - ollama-net
+      - presidio-net
+      - chroma-net
+    ports:
+      - "3210:3210"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/bin/node",
+          "-e",
+          "require('http').get('http://localhost:3210/health', (r) =>
+            process.exit(r.statusCode === 200 ? 0 : 1))",
+        ]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+    environment:
+      ENABLED_OLLAMA: "1"
+      OLLAMA_PROXY_URL: http://ollama:11434

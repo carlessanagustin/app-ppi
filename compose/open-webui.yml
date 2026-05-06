@@ -1,0 +1,37 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.9.2
+    restart: unless-stopped
+    container_name: open-webui
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data-openwebui:/app/backend/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+    depends_on:
+      - ollama
+    networks:
+      - ollama-net
+      - presidio-net
+      - chroma-net
+    environment:
+      GLOBAL_LOG_LEVEL: WARNING
+      OLLAMA_BASE_URL: http://ollama:11434
+      WEBUI_NAME: My Own AIChat
+      WEBUI_SECRET_KEY: t0p-s3cr3t
+      WEBUI_AUTH: "False"
+      ENABLE_WEB_SEARCH: "true"
+      WEB_SEARCH_ENGINE: serpapi
+      SERPAPI_API_KEY: ${SERPAPI_API_KEY}
+      SERPAPI_ENGINE: google
+      VECTOR_DB: chroma
+      CHROMA_HTTP_HOST: chromadb
+      CHROMA_HTTP_PORT: "8000"
+      MILVUS_URI: http://milvus-standalone:19530
+      MILVUS_DB: default
+      MILVUS_TOKEN: root:Milvus

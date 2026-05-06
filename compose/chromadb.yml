@@ -1,0 +1,20 @@
+services:
+  chromadb:
+    image: chromadb/chroma:1.5.9
+    container_name: chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data-chroma:/data
+    restart: unless-stopped
+    environment:
+      - CHROMA_HOST=0.0.0.0
+      - CHROMA_PORT=8000
+    healthcheck:
+      test: [ "CMD", "/bin/bash", "-c", "cat < /dev/null > /dev/tcp/localhost/8000" ]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+    networks:
+      - chroma-net

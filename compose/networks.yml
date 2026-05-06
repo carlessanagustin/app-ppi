@@ -1,0 +1,7 @@
+networks:
+  chroma-net:
+    driver: bridge
+  ollama-net:
+    driver: bridge
+  presidio-net:
+    driver: bridge
