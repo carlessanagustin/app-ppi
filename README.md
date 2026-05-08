@@ -12,7 +12,11 @@ In production, we use Kubernetes with Helm manifests.
 * Protected Health Information (PHI)
 * Payment Card Industry (PCI)
 
-## Architecture ideas
+## Architecture Ideas
+
+![architecture](./images/architecture.drawio.svg)
+
+### Other architecture ideas
 
 * Architecture 1
 
@@ -21,6 +25,3 @@ In production, we use Kubernetes with Helm manifests.
 * Architecture 2
 
 ![architecture](./images/kong_auth_model_routing_flow.svg)
-
-* Architecture 3
-![architecture](./images/architecture.svg)

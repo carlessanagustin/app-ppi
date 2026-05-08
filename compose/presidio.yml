@@ -7,6 +7,12 @@ services:
       - GRPC_PORT=5001
     networks:
       - presidio-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
   presidio-anonymizer:
     image: mcr.microsoft.com/presidio-anonymizer:latest
@@ -14,3 +20,9 @@ services:
       - "5001:3000"
     networks:
       - presidio-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
