@@ -1,5 +1,6 @@
 fastapi
 pydantic
+pydantic-ai-slim[litellm]
 uvicorn
 uvloop
 gliner

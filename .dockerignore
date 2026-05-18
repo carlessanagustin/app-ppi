@@ -4,6 +4,10 @@
 # --- Application source ---
 !privatize_this.py
 !privatize_this_config.py
+!ppi
+!ppi/**
+ppi/__pycache__
+ppi/**/__pycache__
 
 # --- Build dependencies ---
 !requirements.txt
