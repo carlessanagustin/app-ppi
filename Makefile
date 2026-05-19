@@ -44,7 +44,7 @@ docker-push:
 	docker push $(IMAGE_NAME)
 
 docker-run:
-	docker run --rm $(IMAGE_NAME) bash
+	docker run --rm -it $(IMAGE_NAME) bash
 
 docker-clean:
 	-docker rmi $(IMAGE_NAME)

@@ -9,7 +9,9 @@ A PII/PHI/PCI detection and anonymization service. The runtime is a FastAPI app 
 - **GLiNER** (in-process, token classification) — via a custom LiteLLM provider registered under the `gliner/` namespace.
 - **Ollama** (out-of-process, GGUF instruct LLMs) — via LiteLLM's built-in `ollama_chat/` provider, reached over the compose network.
 
-Both backends return the same `list[Entity]` shape; the deterministic anonymizer is plain Python applied after the agent returns. The dev environment is Docker Compose (Ollama + Open-WebUI + Lobe-Chat + Presidio + optional ChromaDB). Production targets Kubernetes with Helm manifests.
+Both backends return the same `list[Entity]` shape; the deterministic anonymizer is plain Python applied after the agent returns. The dev environment is Docker Compose — `docker-compose.yml` `include:`s `compose/networks.yml`, `compose/ollama.yml`, `compose/lobe-chat.yml`, `compose/presidio.yml` by default; `compose/open-webui.yml` and `compose/chromadb.yml` are commented out. Production targets Kubernetes with Helm manifests.
+
+There is no test suite or test runner configured in this repo. `models-pii.ipynb` at the repo root is an experimentation notebook (not part of the runtime).
 
 ## Common Commands
 
@@ -20,7 +22,7 @@ make ollama-pull-models             # pulls the GGUF PII LLMs listed in Makefile
 
 # Stop / reset
 make dc-down
-make dc-restart                     # also removes ./data-chroma
+make dc-restart                     # dc-clean (removes ./data-milvus, ./data-chroma) + dc-up
 
 # Build the stateless FastAPI image (bakes all four GLiNER models)
 make docker-build                   # docker build -t pii:1.0 .
@@ -79,7 +81,8 @@ GLiNER-specific knobs (threshold, label list) ride contextvars defined in `ppi/g
 ### Compose stack (`docker-compose.yml` via `include:` of `compose/*.yml`)
 
 - `ollama` (:11434) — serves the GGUF PII LLMs pulled by `make ollama-pull-models`. The FastAPI service reaches it at `http://ollama:11434` (override with `OLLAMA_API_BASE`).
-- `lobe-chat`, `open-webui` (optional), `presidio`, `chromadb` (optional) — auxiliary; not on the request path of the PII service itself.
+- `lobe-chat`, `presidio` — enabled by default; auxiliary, not on the request path of the PII service itself.
+- `open-webui`, `chromadb` — present under `compose/` but commented out of `docker-compose.yml`; uncomment the `include:` line to enable.
 
 The Ollama-pulled `MODELS` list in `Makefile` holds only **Ollama-compatible** GGUF PII LLMs. The four GLiNER HuggingFace models are NOT pulled by Ollama (they aren't GGUF and Ollama can't serve them); they are baked directly into the FastAPI Docker image at build time.
 
